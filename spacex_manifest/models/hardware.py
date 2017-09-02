@@ -15,10 +15,10 @@ class FlightVehicle(ModelBase):
     A specific combination of flight hardware for a launch. Used only once.
     """
     name = sa.Column(sa.Text, nullable=False)
-    launch_id = sa.Column(sa.ForeignKey('launch.id', ondelete='CASCADE'))
+    flight_id = sa.Column(sa.ForeignKey('flight.id', ondelete='CASCADE'))
     vehicle_id = sa.Column(sa.ForeignKey('vehicle.id'))
 
-    launch = sa.orm.relationship('Launch')
+    flight = sa.orm.relationship('Flight')
     vehicle = sa.orm.relationship('Vehicle')
     boosters = sa.orm.relationship('Vehicle')
     upper_stages = sa.orm.relationship('Vehicle')
@@ -27,10 +27,10 @@ class Payload(ModelBase):
     name = sa.Column(sa.Text, nullable=False)
     customer = sa.Column(sa.Text)
     flight_vehicle_id = sa.Column(sa.ForeignKey('flightvehicle.id'), nullable=False)
-    payload_type = sa.Column(sa.Enum('Primary', 'Secondary'), default='Primary')
+    payload_type = sa.Column(sa.Text)  # sa.Column(sa.Enum('Primary', 'Secondary'), default='Primary')
     mass = sa.Column(sa.Float)
     target_orbit = sa.Column(sa.Text)
-    deploy_outcome = sa.Column(sa.Enum(Outcome.options), default=Outcome.unknown.value)
+    deploy_outcome = sa.Column(sa.Text)  # sa.Column(sa.Enum(*Outcome.options()), default=Outcome.unknown.value, name=Outcome.__class__.__name__.lower())
     deploy_outcome_description = sa.Column(sa.Text)
 
     flight_vehicle = sa.orm.relationship('FlightVehicle')
@@ -38,7 +38,7 @@ class Payload(ModelBase):
 class BoostStage(ModelBase):
     name = sa.Column(sa.Text, nullable=False)
     block = sa.Column(sa.Text)
-    center_core = sa.Column(sa.Boolean)
+    center_core = sa.Column(sa.Boolean, default=False)
 
 class FlightVehicleBoostStage(ModelBase):
     boost_stage_id = sa.Column(sa.ForeignKey('booststage.id'), nullable=False)

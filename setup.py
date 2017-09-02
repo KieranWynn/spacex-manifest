@@ -40,8 +40,9 @@ setup(
     # requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
     install_requires=[
-        'flask',
-        'sqlalchemy'
+        'Flask-API',
+        'sqlalchemy',
+        'psycopg2'
     ],
 
     # Set Pytest as a requirement for running tests
